@@ -1,0 +1,27 @@
+class Object
+types
+-- TODO Define types here
+	public String = seq of char;
+	
+values
+-- TODO Define values here
+	
+
+instance variables
+public position: Position;
+public type: String;
+public id: nat;
+	
+operations
+public setPosition: nat * nat ==> ()
+		setPosition(newX, newY) ==
+			(
+				position.x := newX;
+				position.y := newY;
+			);
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Object

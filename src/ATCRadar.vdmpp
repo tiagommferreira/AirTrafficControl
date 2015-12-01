@@ -5,22 +5,64 @@ values
 
 instance variables
 -- TODO Define instance variables here
-	private radar: set of RadarObject;
+	private radar: set of Object;
 	
 operations
 -- TODO Define operations here
-	public ATCRadar: () ==> ATCRadar
-		ATCRadar() == 
+	public ATCRadar: nat ==> ATCRadar
+		ATCRadar(size) == 
 		(
-			radar := {new Airplane(1,new Position(1,1),5,10),new Position(1,2)};
+			-- initializes the current radar cells
+			radar := {};
+			radar := radar union {new Airplane(1,1,1,new Position(1,1))};
+			radar := radar union {new Airplane(2,1,1,new Position(2,2))};
+			
+			
 			return self;
-		)
-		pre 1>0
-		post 1>0
+		);
+		
+	public getAirplane: nat ==> Airplane
+		getAirplane(id) == 
+		(
+			for all object in set radar do
+			(
+				if(object.type = "airplane" and object.id = id)
+				then(
+					return object;
+				)
+				
+			);
+			return undefined;
+		);
+		
+	public checkAirplaneSafety: () ==> ()
+		checkAirplaneSafety() ==
+		(
+			for all object in set radar do
+			(
+				if(object.type = "airplane")
+				then(
+					-- cria novo set sem ele
+					dcl testSet: set of Object := radar \ {object};
+					
+					--para cada outro aviao, ve se esta perto, se estiver, manda-o mudar de rota
+					for all airplane in set testSet do
+					(
+						if((abs(airplane.position.x - object.position.x) < 3) and (abs(airplane.position.y - object.position.y) < 3))
+						then (
+							-- provisorio
+							object.setPosition(object.position.x + 1, object.position.y)
+						)
+					)
+					
+					
+				)
+			)
+		);
+		
+		
 
 functions
--- TODO Define functiones here
-
 
 traces
 -- TODO Define Combinatorial Test Traces here

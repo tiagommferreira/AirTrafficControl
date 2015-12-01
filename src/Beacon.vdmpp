@@ -1,4 +1,4 @@
-class Beacon
+class Beacon is subclass of Object
 types
 -- TODO Define types here
 values

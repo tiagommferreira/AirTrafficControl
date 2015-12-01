@@ -1,36 +1,34 @@
-class Airplane 
+class Airplane is subclass of Object
 types
 -- TODO Define types here
-	public String = seq of char;
+
 										 
 	public Objective = <Land> | <Exit>
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-	private id: nat;
-	private position: Position;
 	private direction: nat;  -- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
 	private speed: nat;
 	private objective: Objective := <Land>;
-	private type: String := "airplane";
 	
 operations
 -- TODO Define operations here
 
 	-- Constructor
-	public Airplane: nat * Position * nat * nat ==> Airplane
-		Airplane(id1,position1,direction1,speed1) ==
+	public Airplane: nat * nat * nat * Position ==> Airplane
+		Airplane(id1,direction1,speed1,position1) ==
 			(
 					id := id1;
-					position := position1;
 					direction := direction1;
 					speed := speed1;
+					position := position1;
+					type := "airplane";
 					
 					return self;
 			)
 			pre direction1 > 0 and direction1 < 9
-			post id = id1 and position = position1 and direction = direction1 and speed = speed1 and objective = <Land>; 
+			post id = id1 and direction = direction1 and speed = speed1 and objective = <Land>; 
 			
 	-- Getters
 	public getId: () ==> nat
@@ -47,13 +45,6 @@ operations
 			)
 			post type = type~;		
 			
-	public getPosition: () ==> Position
-		getPosition() ==
-			(
-				return position;
-			)
-			post position = position~;
-			
 	public getDirection: () ==> nat
 		getDirection() ==
 			(
@@ -69,13 +60,6 @@ operations
 			post speed = speed~;
 	
 	-- Setters
-	public setPosition: Position ==> ()
-		setPosition(pos) ==
-			(
-				position := pos;
-			)
-			post position = pos;
-			
 	public setDirection: nat ==> ()
 		setDirection(dir) ==
 			(
@@ -89,6 +73,7 @@ operations
 				speed := s;
 			)
 			post speed = s;
+			
 	
 	-- Utility functions
 	public rotate: String ==> ()
