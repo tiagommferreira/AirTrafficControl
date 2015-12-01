@@ -1,0 +1,28 @@
+class Position
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+-- TODO Define instance variables here
+	public x: nat;
+	public y: nat;
+	
+operations
+-- TODO Define operations here
+public Position: nat * nat ==> Position
+		Position(cordX,cordY) ==
+			(
+				x := cordX;
+				y := cordY;
+				return self;
+			)
+			pre cordX < 20 and cordX >= 0 and cordY >= 0 and cordY < 20
+			
+functions
+-- TODO Define functiones here
+
+
+traces
+-- TODO Define Combinatorial Test Traces here
+end Position

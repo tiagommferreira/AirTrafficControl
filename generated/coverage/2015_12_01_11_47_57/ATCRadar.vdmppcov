@@ -1,0 +1,27 @@
+class ATCRadar
+types
+values
+-- TODO Define values here
+
+instance variables
+-- TODO Define instance variables here
+	private radar: set of RadarObject;
+	
+operations
+-- TODO Define operations here
+	public ATCRadar: () ==> ATCRadar
+		ATCRadar() == 
+		(
+			radar := {new Airplane(1,new Position(1,1),5,10),new Position(1,2)};
+			return self;
+		)
+		pre 1>0
+		post 1>0
+
+functions
+-- TODO Define functiones here
+
+
+traces
+-- TODO Define Combinatorial Test Traces here
+end ATCRadar

@@ -1,11 +1,8 @@
-class Airplane
+class Airplane 
 types
 -- TODO Define types here
 	public String = seq of char;
-	
-	public Position :: x: nat
-										 y: nat;
-	
+										 
 	public Objective = <Land> | <Exit>
 values
 -- TODO Define values here
@@ -16,6 +13,8 @@ instance variables
 	private direction: nat;  -- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
 	private speed: nat;
 	private objective: Objective := <Land>;
+	private type: String := "airplane";
+	
 operations
 -- TODO Define operations here
 
@@ -40,6 +39,13 @@ operations
 				return id;
 			)
 			post id = id~;
+			
+	public getType: () ==> String
+		getType() ==
+			(
+				return type;
+			)
+			post type = type~;		
 			
 	public getPosition: () ==> Position
 		getPosition() ==
@@ -85,10 +91,10 @@ operations
 			post speed = s;
 	
 	-- Utility functions
-	public rotate: nat * String ==> ()
-		rotate(deg, orientation) ==
+	public rotate: String ==> ()
+		rotate(orientation) ==
 			(
-				direction := direction + 1;
+				direction := (direction + 1) mod 9 ;
 			)
 			pre orientation = "CW" or orientation = "CCW"
 			post direction > 0 and direction < 9

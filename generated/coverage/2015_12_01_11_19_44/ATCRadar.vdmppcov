@@ -1,0 +1,25 @@
+class ATCRadar
+types
+values
+-- TODO Define values here
+
+instance variables
+-- TODO Define instance variables here
+
+operations
+-- TODO Define operations here
+	public ATCRadar: () ==> ATCRadar
+		ATCRadar() == 
+		(
+			return self;
+		)
+		pre 1>0
+		post 1>0
+
+functions
+-- TODO Define functiones here
+
+
+traces
+-- TODO Define Combinatorial Test Traces here
+end ATCRadar
