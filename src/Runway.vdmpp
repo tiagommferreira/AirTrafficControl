@@ -4,9 +4,21 @@ types
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+public position: Position;
+public entryDir: nat;
 operations
 -- TODO Define operations here
+	public Runway: Position * nat ==> Runway
+		Runway(position1,e) == 
+		(
+			-- initializes the current radar cells
+			position := position1;
+			entryDir := e;
+			
+			return self;
+		)
+		pre position1.x > 0 and position1.x < ATCRadar`size and position1.y > 0 and position1.y < ATCRadar`size;
+
 functions
 -- TODO Define functiones here
 traces

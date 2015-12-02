@@ -82,8 +82,38 @@ operations
 				direction := (direction + 1) mod 9 ;
 			)
 			pre orientation = "CW" or orientation = "CCW"
-			post direction > 0 and direction < 9
+			post direction > 0 and direction < 9;
 			
+	public move: () ==> ()
+		move() ==
+		(
+			-- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
+		
+			if(direction = 1) -- N
+			then(setPosition(position.x,position.y+1))
+			
+			else if(direction = 2) -- NE
+			then(setPosition(position.x+1,position.y+1))
+			
+			else if(direction = 3) -- E
+			then(setPosition(position.x+1,position.y))
+			
+			else if(direction = 4) -- SE
+			then(setPosition(position.x+1,position.y-1))	
+			
+			else if(direction = 5) -- S
+			then(setPosition(position.x,position.y-1))
+			
+			else if(direction = 6) -- SW
+			then(setPosition(position.x-1,position.y-1))
+			
+			else if(direction = 7) -- W
+			then(setPosition(position.x-1,position.y))
+			
+			else if(direction = 8) -- NW
+			then(setPosition(position.x-1,position.y+1))
+			 
+		);
 	
 functions
 -- TODO Define functiones here
