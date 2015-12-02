@@ -18,7 +18,8 @@ public setPosition: nat * nat ==> ()
 			(
 				position.x := newX;
 				position.y := newY;
-			);
+			)
+			pre newX < ATCRadar`size and newX > 0 and newY < ATCRadar`size and newY > 0;
 
 functions
 -- TODO Define functiones here

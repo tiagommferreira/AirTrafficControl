@@ -6,7 +6,19 @@ values
 instance variables
 -- TODO Define instance variables here
 operations
--- TODO Define operations here
+-- Constructor
+	public Beacon: nat * Position ==> Beacon
+		Beacon(id1,position1) ==
+			(
+					id := id1;
+					position := position1;
+					type := "beacon";
+					
+					return self;
+			)
+			pre position1.x > 0 and position1.x < ATCRadar`size and position1.y > 0 and position1.y < ATCRadar`size
+			post id = id1; 
+
 functions
 -- TODO Define functiones here
 traces

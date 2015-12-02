@@ -27,7 +27,7 @@ operations
 					
 					return self;
 			)
-			pre direction1 > 0 and direction1 < 9
+			pre direction1 > 0 and direction1 < 9 and position1.x > 0 and position1.x < ATCRadar`size and position1.y > 0 and position1.y < ATCRadar`size
 			post id = id1 and direction = direction1 and speed = speed1 and objective = <Land>; 
 			
 	-- Getters

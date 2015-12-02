@@ -6,20 +6,31 @@ values
 instance variables
 -- TODO Define instance variables here
 	private radar: set of Object;
+	public static size: nat := 10;
 	
 operations
 -- TODO Define operations here
 	public ATCRadar: nat ==> ATCRadar
-		ATCRadar(size) == 
+		ATCRadar(s) == 
 		(
+			size := s;
 			-- initializes the current radar cells
 			radar := {};
 			radar := radar union {new Airplane(1,1,1,new Position(1,1))};
 			radar := radar union {new Airplane(2,1,1,new Position(2,2))};
-			
+			radar := radar union {new Beacon(3,new Position(1,2))};
 			
 			return self;
-		);
+		)
+		pre s >= size;
+		
+	public addObject: Object ==> ()
+		addObject(object) ==
+		(
+			radar := radar union {object}
+		)
+		pre object <> undefined
+		post card radar = card radar~ + 1; 
 		
 	public getAirplane: nat ==> Airplane
 		getAirplane(id) == 
@@ -33,7 +44,9 @@ operations
 				
 			);
 			return undefined;
-		);
+		)
+		pre card radar > 0
+		post radar = radar~; 
 		
 	public checkAirplaneSafety: () ==> ()
 		checkAirplaneSafety() ==
@@ -58,9 +71,9 @@ operations
 					
 				)
 			)
-		);
-		
-		
+		)
+		pre card radar > 0
+		post radar = radar~; 
 
 functions
 
