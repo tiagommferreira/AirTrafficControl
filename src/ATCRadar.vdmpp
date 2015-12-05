@@ -37,7 +37,7 @@ operations
 		(
 			for all object in set radar do
 			(
-				if(object.type = "airplane" and object.id = id)
+				if(isofclass(Airplane,object) and object.id = id)
 				then(
 					return object;
 				)
@@ -53,7 +53,7 @@ operations
 		(
 			for all object in set radar do
 			(
-				if(object.type = "airplane")
+				if(isofclass(Airplane,object))
 				then(
 					-- cria novo set sem ele
 					dcl testSet: set of Object := radar \ {object};

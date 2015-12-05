@@ -12,7 +12,6 @@ operations
 			(
 					id := id1;
 					position := position1;
-					type := "beacon";
 					
 					return self;
 			)

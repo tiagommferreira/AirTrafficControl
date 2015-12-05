@@ -23,7 +23,6 @@ operations
 					direction := direction1;
 					speed := speed1;
 					position := position1;
-					type := "airplane";
 					
 					return self;
 			)
@@ -36,14 +35,7 @@ operations
 			(
 				return id;
 			)
-			post id = id~;
-			
-	public getType: () ==> String
-		getType() ==
-			(
-				return type;
-			)
-			post type = type~;		
+			post id = id~;	
 			
 	public getDirection: () ==> nat
 		getDirection() ==

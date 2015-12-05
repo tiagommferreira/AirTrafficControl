@@ -9,7 +9,6 @@ values
 
 instance variables
 public position: Position;
-public type: String;
 public id: nat;
 	
 operations
