@@ -19,6 +19,7 @@ operations
 			radar := radar union {new Airplane(1,1,1,new Position(1,1))};
 			radar := radar union {new Airplane(2,1,1,new Position(2,2))};
 			radar := radar union {new Beacon(3,new Position(1,2))};
+			radar := radar union {new Runway(new Position(5,5),3)};
 			
 			return self;
 		)
@@ -61,26 +62,33 @@ operations
 					--para cada outro aviao, ve se esta perto, se estiver, manda-o mudar de rota
 					for all airplane in set testSet do
 					(
-						if((abs(airplane.position.x - object.position.x) < 3) and (abs(airplane.position.y - object.position.y) < 3))
-						then (
-							-- rodar os avioes para lados opostos
-							-- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
-							dcl a: Airplane := object;
-							dcl b: Airplane := airplane;
-							
-							if( (a.getDirection() = 1 and b.getDirection() = 5) 
-							     or ((a.getDirection() = 5 and b.getDirection() = 1))
-							     or ((a.getDirection() = 8 and b.getDirection() = 6))
-							     or ((a.getDirection() = 6 and b.getDirection() = 8))
-							     or ((a.getDirection() = 3 and b.getDirection() = 7))
-							     or ((a.getDirection() = 7 and b.getDirection() = 3)) )
-							then (a.rotate("CW");b.rotate("CW"))
-							
-							else if( (a.getDirection() = 1 and b.getDirection() = 6)
-												or (a.getDirection() = 6 and b.getDirection() = 1))
-							then(a.rotate("CW") )
-							
+					
+						if(isofclass(Airplane,airplane))
+						then(
+								if((abs(airplane.position.x - object.position.x) < 3) and (abs(airplane.position.y - object.position.y) < 3))
+								then (
+									-- rodar os avioes para lados opostos
+									-- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
+									dcl a: Airplane := object;
+									dcl b: Airplane := airplane;
+									
+									if( (a.getDirection() = 1 and b.getDirection() = 5) 
+									     or ((a.getDirection() = 5 and b.getDirection() = 1))
+									     or ((a.getDirection() = 8 and b.getDirection() = 6))
+									     or ((a.getDirection() = 6 and b.getDirection() = 8))
+									     or ((a.getDirection() = 3 and b.getDirection() = 7))
+									     or ((a.getDirection() = 7 and b.getDirection() = 3)) )
+									then (a.rotate("CW");b.rotate("CW"))
+									
+									else if( (a.getDirection() = 1 and b.getDirection() = 6)
+														or (a.getDirection() = 6 and b.getDirection() = 1))
+									then(a.rotate("CW") )
+									
+								)							
+
+
 						)
+								
 					)
 					
 					
@@ -88,7 +96,21 @@ operations
 			)
 		)
 		pre card radar > 0
-		post radar = radar~; 
+		post radar = radar~;
+		
+		public move: () ==> ()
+			move() == 
+			(
+				for all object in set radar do
+				(
+					if(isofclass(Airplane,object))
+					then
+					(
+						dcl a: Airplane := object;
+						a.move();
+					)
+				)
+			)
 
 functions
 

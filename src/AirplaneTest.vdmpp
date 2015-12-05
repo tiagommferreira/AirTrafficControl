@@ -1,0 +1,55 @@
+class AirplaneTest
+        instance variables
+                a : Airplane := new Airplane(1,1,1,new Position(1,1));
+        operations
+                private assertTrue: bool ==> ()
+                assertTrue(cond) == return
+                pre cond;
+                        
+                private testMove: () ==> ()
+                testMove() ==
+                (
+                    a.move();
+                    assertTrue(a.position.x = 1 and a.position.y = 2);
+                    a.move();
+                    assertTrue(a.position.x = 1 and a.position.y = 3);
+                );
+                
+                private testRotate: () ==> ()
+                testRotate() ==
+                (
+                    a.rotate("CW");
+                    assertTrue(a.getDirection() = 2);
+                    a.rotate("CCW");
+                    a.rotate("CCW");
+                    assertTrue(a.getDirection() = 8);
+                );
+                
+                private testMoveWithRotate: () ==> ()
+                testMoveWithRotate() ==
+                (
+                    a.rotate("CW");
+                    a.move();
+                    assertTrue(a.getDirection() = 2 and a.position.x = 2 and a.position.y = 2);
+                    a.rotate("CW");
+                    a.rotate("CW");
+                    a.move();
+                    assertTrue(a.getDirection() = 4 and a.position.x = 3 and a.position.y = 1);
+                    a.rotate("CW");
+                    a.rotate("CW");
+                    a.rotate("CW");
+                    a.move();
+                    assertTrue(a.getDirection() = 7 and a.position.x = 2 and a.position.y = 1);
+                    a.move();
+                    assertTrue(a.getDirection() = 7 and a.position.x = 1 and a.position.y = 1);
+                );
+                
+                public static main: () ==> ()
+                main() ==
+                (
+                    new AirplaneTest().testMove();
+                    new AirplaneTest().testRotate();
+                    new AirplaneTest().testMoveWithRotate();
+                        
+                );
+end AirplaneTest

@@ -1,0 +1,22 @@
+class ATCRadarTest
+        instance variables
+                r : ATCRadar := new ATCRadar(15);
+        operations
+                private assertTrue: bool ==> ()
+                assertTrue(cond) == return
+                pre cond;
+                        
+                private test: () ==> ()
+                test() ==
+                (
+                    r.move();
+                    r.checkAirplaneSafety();
+                );
+                
+                public static main: () ==> ()
+                main() ==
+                (
+                    new ATCRadarTest().test();
+                        
+                );
+end ATCRadarTest

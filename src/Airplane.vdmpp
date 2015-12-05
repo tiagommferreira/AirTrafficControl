@@ -71,7 +71,18 @@ operations
 	public rotate: String ==> ()
 		rotate(orientation) ==
 			(
-				direction := (direction + 1) mod 9 ;
+				if(orientation = "CW")
+				then(
+					direction := (direction + 1) mod 9 ;
+					if(direction = 9)
+					then(direction := 1)
+				)
+				else (
+					direction := (direction - 1) mod 9 ;
+					if(direction = 0)
+					then(direction := 8)
+				)
+				
 			)
 			pre orientation = "CW" or orientation = "CCW"
 			post direction > 0 and direction < 9;
