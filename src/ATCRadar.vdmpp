@@ -7,6 +7,7 @@ instance variables
 -- TODO Define instance variables here
 	private radar: set of Object;
 	public static size: nat := 10;
+	public static runway: Runway := new Runway(new Position(5,5),3);
 	
 operations
 -- TODO Define operations here
@@ -16,10 +17,12 @@ operations
 			size := s;
 			-- initializes the current radar cells
 			radar := {};
-			radar := radar union {new Airplane(1,1,1,new Position(1,1))};
-			radar := radar union {new Airplane(2,1,1,new Position(2,2))};
+			radar := radar union {new Airplane(1,2,1,new Position(1,1))};
+			radar := radar union {new Airplane(2,6,1,new Position(3,3))};
 			radar := radar union {new Beacon(3,new Position(1,2))};
-			radar := radar union {new Runway(new Position(5,5),3)};
+			radar := radar union {runway};
+			
+			print();
 			
 			return self;
 		)
@@ -72,17 +75,19 @@ operations
 									dcl a: Airplane := object;
 									dcl b: Airplane := airplane;
 									
+									
 									if( (a.getDirection() = 1 and b.getDirection() = 5) 
 									     or ((a.getDirection() = 5 and b.getDirection() = 1))
 									     or ((a.getDirection() = 8 and b.getDirection() = 6))
 									     or ((a.getDirection() = 6 and b.getDirection() = 8))
 									     or ((a.getDirection() = 3 and b.getDirection() = 7))
-									     or ((a.getDirection() = 7 and b.getDirection() = 3)) )
-									then (a.rotate("CW");b.rotate("CW"))
-									
-									else if( (a.getDirection() = 1 and b.getDirection() = 6)
-														or (a.getDirection() = 6 and b.getDirection() = 1))
-									then(a.rotate("CW") )
+									     or ((a.getDirection() = 7 and b.getDirection() = 3))
+									     or ((a.getDirection() = 2 and b.getDirection() = 6))
+									     or ((a.getDirection() = 6 and b.getDirection() = 2))
+									     or ((a.getDirection() = 6 and b.getDirection() = 1))
+									     or ((a.getDirection() = 1 and b.getDirection() = 6)) )
+									then (IO`print("a rodar");a.rotate("CW"))
+								
 									
 								)							
 
@@ -101,16 +106,64 @@ operations
 		public move: () ==> ()
 			move() == 
 			(
+				
+        checkAirplaneSafety();
+			
 				for all object in set radar do
 				(
 					if(isofclass(Airplane,object))
 					then
 					(
 						dcl a: Airplane := object;
-						a.move();
+						if(a.canMove())
+						then(a.move())
+						else(
+						radar := radar \ {a}
+						);
 					)
 				)
+			);
+			
+		public print: () ==> ()
+		print() ==
+		(
+			dcl x: nat := 0;
+			dcl y: real := size;
+			dcl found: bool := false;
+			
+			while y <> -1 do
+			(
+				while x <> size do
+				(
+					for all object in set radar do
+					(
+						if(object.position.x = x and object.position.y = y)
+						then(
+							found := true;
+						
+							if(isofclass(Airplane,object))
+							then(IO`print("A"))
+							else if(isofclass(Beacon,object))
+							then(IO`print("B"))
+							else (IO`print("R"))
+						);
+					);
+					
+					if(found <> true)
+					then(IO`print("."));
+					
+					found := false;
+					
+					IO`print(" ");
+					
+					x := x+1;
+				);
+				x := 0;
+				IO`print("\n");
+				y := y-1;
 			)
+			
+		)
 
 functions
 

@@ -91,32 +91,86 @@ operations
 		move() ==
 		(
 			-- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
+			
+			if(objective = <Land>)
+			then(lineUpWithRunway())
+			else(lineUpExit());
 		
 			if(direction = 1) -- N
-			then(setPosition(position.x,position.y+1))
+			then(setPosition(position.x,position.y+speed))
 			
 			else if(direction = 2) -- NE
-			then(setPosition(position.x+1,position.y+1))
+			then(setPosition(position.x+speed,position.y+speed))
 			
 			else if(direction = 3) -- E
-			then(setPosition(position.x+1,position.y))
+			then(setPosition(position.x+speed,position.y))
 			
 			else if(direction = 4) -- SE
-			then(setPosition(position.x+1,position.y-1))	
+			then(setPosition(position.x+speed,position.y-speed))	
 			
 			else if(direction = 5) -- S
-			then(setPosition(position.x,position.y-1))
+			then(setPosition(position.x,position.y-speed))
 			
 			else if(direction = 6) -- SW
-			then(setPosition(position.x-1,position.y-1))
+			then(setPosition(position.x-speed,position.y-speed))
 			
 			else if(direction = 7) -- W
-			then(setPosition(position.x-1,position.y))
+			then(setPosition(position.x-speed,position.y))
 			
 			else if(direction = 8) -- NW
-			then(setPosition(position.x-1,position.y+1))
+			then(setPosition(position.x-speed,position.y+speed))
 			 
 		);
+		
+		public lineUpWithRunway: () ==> ()
+		lineUpWithRunway() ==
+		(
+			dcl r: Runway := ATCRadar`runway;
+			
+			return;
+			
+		)
+		post position = position~;
+		
+		public lineUpExit: () ==> ()
+		lineUpExit() ==
+		(
+			if(direction <> 1 and direction <> 3 and direction <> 5 and direction <> 7)
+			then(rotate("CW"))
+		)
+		post position = position~;
+		
+		public canMove: () ==> bool
+		canMove() ==
+		(
+			
+			if(direction = 1) -- N
+			then(if(position.y+speed < ATCRadar`size) then(return true;))
+			
+			else if(direction = 2) -- NE
+			then(if(position.x+speed < ATCRadar`size and position.y+speed < ATCRadar`size) then(return true;))
+			
+			else if(direction = 3) -- E
+			then(if(position.x+speed < ATCRadar`size) then(return true))
+			
+			else if(direction = 4) -- SE
+			then(if(position.x+speed < ATCRadar`size and position.y-speed >= 0))	
+			
+			else if(direction = 5) -- S
+			then(if(position.y-speed >= 0) then(return true;))
+			
+			else if(direction = 6) -- SW
+			then(if(position.x-speed >= 0 and position.y-speed >= 0) then(return true;))
+			
+			else if(direction = 7) -- W
+			then(if(position.x-speed >= 0) then(return true;) )
+			
+			else if(direction = 8) -- NW
+			then(if(position.x-speed >= 0 and position.y+speed < ATCRadar`size) then(return true;));
+			
+			return false;
+		)
+		post position = position~;
 	
 functions
 -- TODO Define functiones here

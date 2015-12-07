@@ -10,7 +10,6 @@ class ATCRadarTest
                 test() ==
                 (
                     r.move();
-                    r.checkAirplaneSafety();
                 );
                 
                 public static main: () ==> ()
