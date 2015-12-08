@@ -145,15 +145,14 @@ operations
 			IO`print("\n");
 			IO`print(deltaY);
 			IO`print("\n");
-			
-			
-			if(deltaX = -1 or deltaX = 1)
+
+			if((deltaX = -1 or deltaX = 1) and (deltaY= -1 or deltaY=1))
 			then(
 				if(deltaY > 0)
 				then(
 					if(direction <> 5)
 					then(
-						rotate("CW");
+						if(deltaY<0)then (rotate("CW")) else (rotate("CCW"))
 					)
 				)
 				else if(deltaY < 0)
@@ -165,7 +164,6 @@ operations
 				)
 				else(
 				)
-			
 			)
 
 			else if(deltaX > 0)
