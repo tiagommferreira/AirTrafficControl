@@ -3,14 +3,14 @@ types
 -- TODO Define types here
 
 										 
-	public Objective = <Land> | <Exit> | <Beacon>
+	public Objective = <Land> | <Exit> | <Beacon> | <Hold>
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
 	private direction: nat;  -- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
 	private speed: nat;
-	public objective: Objective := <Land>;
+	public objective: Objective := <Hold>;
 	private nextDirection: nat;
 	private beaconId: nat;
 	
@@ -23,7 +23,7 @@ operations
 			(
 					id := id1;
 					direction := direction1;
-					setObjective(<Beacon>,3);
+					--setObjective(<Beacon>,3);
 					speed := speed1;
 					position := position1;
 					nextDirection := ((ATCRadar`runway.entryDir+4) mod 8); -- gives the opposite location of the entrance
@@ -128,7 +128,8 @@ operations
 			then(lineUpWithRunway())
 			else if(objective = <Beacon>)
 			then(goToBeacon())
-			else(lineUpExit());
+			else if(objective = <Exit>)
+			then(lineUpExit());
 			 
 		);
 		
@@ -136,67 +137,43 @@ operations
 		goToBeacon() ==
 		(
 			dcl b: Beacon := ATCRadar`getBeacon(beaconId);
-			dcl deltaX: real := position.x - b.position.x;
-			dcl deltaY: real := position.y - b.position.y;
+			dcl entry: nat;
 			
-			IO`print(direction);
-			IO`print("\n");
-			IO`print(deltaX);
-			IO`print("\n");
-			IO`print(deltaY);
-			IO`print("\n");
-
-			if((deltaX = -1 or deltaX = 1) and (deltaY= -1 or deltaY=1))
-			then(
-				if(deltaY > 0)
-				then(
-					if(direction <> 5)
-					then(
-						if(deltaY<0)then (rotate("CW")) else (rotate("CCW"))
-					)
-				)
-				else if(deltaY < 0)
-				then(
-					if(direction <> 1)
-					then(
-						rotate("CW");
-					)
-				)
-				else(
-				)
-			)
-
-			else if(deltaX > 0)
-			then(
-				if(direction <> 7)
-				then(
-					rotate("CW");
-				)
-			)
-			else if(deltaX < 0)
-			then(
-				if(direction <> 3)
-				then(
-					rotate("CW");
-				)
-			)
+			if(direction = 8 or direction = 7 or direction = 6)
+			then(entry := 3)
+			else if(direction = 2 or direction = 3 or direction = 4)
+			then(entry := 7)
+			else if(direction = 1)
+			then(entry := 5)
+			else if(direction = 5)
+			then(entry := 1);
+			
+			if(entry = 1)
+			then(nextDirection := 5)
+			else if(entry = 3)
+			then(nextDirection := 7)
+			else if(entry = 5)
+			then(nextDirection := 1)
+			else if(entry = 7)
+			then(nextDirection := 3);
+			
+			lineUp(entry, b);
+			
 		
 		);
 		
-		public lineUpWithRunway: () ==> ()
-		lineUpWithRunway() ==
+		public lineUp: nat * Object ==> ()
+		lineUp(entry, o) ==
 		(
-			dcl r: Runway := ATCRadar`runway;
-			
-			if(r.entryDir = 5)
+			if(entry = 5)
 			then(
 				--direcao da saida
 				if(direction <> nextDirection)
 				-- rodar para parede oposta
 				then (
-					if(r.position.x < position.x) 
+					if(o.position.x < position.x) 
 					then ( rotate("CCW"))
-					else if(r.position.x > position.x) then
+					else if(o.position.x > position.x) then
 					( rotate("CW"))
 					else if(direction = 6) then(rotate("CCW"))else(rotate("CW"))
 					
@@ -208,7 +185,7 @@ operations
 					if((ATCRadar`size - position.y) = speed) 
 					then (
 						-- rodar para a posicao lateral
-						if(r.position.x < position.x) 
+						if(o.position.x < position.x) 
 						then ( 
 							rotate("CCW");
 							nextDirection := (nextDirection + 6) mod 8;
@@ -218,12 +195,12 @@ operations
 							nextDirection := (nextDirection + 2) mod 8;
 						 )
 					)
-					else if((position.x - r.position.x) = speed ) 
+					else if((position.x - o.position.x) = speed ) 
 					then(
 						rotate("CCW");
 						nextDirection := (nextDirection + 6) mod 8;
 						
-					) else if((position.x - r.position.x) = -speed  ) 
+					) else if((position.x - o.position.x) = -speed  ) 
 						then (
 							rotate("CW");
 							nextDirection := (nextDirection + 2) mod 8;		
@@ -231,15 +208,15 @@ operations
 				)
 			)
 			
-			else if(r.entryDir = 1)
+			else if(entry = 1)
 				then(
 				--direcao da saida
 				if(direction <> nextDirection)
 				-- rodar para parede oposta
 				then (
-					if(r.position.x > position.x) 
+					if(o.position.x > position.x) 
 					then ( rotate("CCW"))
-					else if(r.position.x < position.x) then
+					else if(o.position.x < position.x) then
 					( rotate("CW"))
 					else if(direction = 2) then(rotate("CCW"))else(rotate("CW"))
 					
@@ -251,7 +228,7 @@ operations
 					if(position.y = speed) 
 					then (
 						-- rodar para a posicao lateral
-						if(r.position.x < position.x) 
+						if(o.position.x < position.x) 
 						then (
 							rotate("CW");
 							nextDirection := (nextDirection + 2 ) mod 8;
@@ -261,12 +238,12 @@ operations
 							nextDirection := (nextDirection -2 ) mod 8;
 						 )
 					)
-					else if((r.position.x - position.x) = speed ) 
+					else if((o.position.x - position.x) = speed ) 
 					then(
 						rotate("CCW");
 						nextDirection := (nextDirection - 2) mod 8;
 						
-					) else if((r.position.x - position.x) = -speed  ) 
+					) else if((o.position.x - position.x) = -speed  ) 
 						then (
 							rotate("CW");
 							nextDirection := (nextDirection + 2) mod 8;		
@@ -274,15 +251,15 @@ operations
 				)
 			)
 			
-			else if(r.entryDir = 3)
+			else if(entry = 3)
 			then(
 				--direcao da saida
 				if(direction <> nextDirection)
 				-- rodar para parede oposta
 				then (
-					if(r.position.y > position.y) 
+					if(o.position.y > position.y) 
 					then ( rotate("CW") )
-					else if(r.position.y > position.y) then
+					else if(o.position.y > position.y) then
 					( rotate("CCW"))
 					else if(direction = 2) then(rotate("CW"))else(rotate("CCW"))
 					
@@ -294,7 +271,7 @@ operations
 					if(position.x = speed) 
 					then (
 						-- rodar para a posicao lateral
-						if(r.position.y > position.y) 
+						if(o.position.y > position.y) 
 						then ( 
 							rotate("CW");
 							nextDirection := (nextDirection + 2) mod 8;
@@ -304,12 +281,12 @@ operations
 							nextDirection := (nextDirection - 2) mod 8;
 						 )
 					)
-					else if((position.y - r.position.y) = speed ) 
+					else if((position.y - o.position.y) = speed ) 
 					then(
 						rotate("CCW");
 						nextDirection := (nextDirection - 2) mod 8;
 						
-					) else if((position.y - r.position.y) = -speed  ) 
+					) else if((position.y - o.position.y) = -speed  ) 
 						then (
 							rotate("CW");
 							nextDirection := (nextDirection + 2) mod 8;		
@@ -317,15 +294,15 @@ operations
 				)
 			)
 			
-			else if(r.entryDir = 7)
+			else if(entry = 7)
 			then(
 				--direcao da saida
 				if(direction <> nextDirection)
 				-- rodar para parede oposta
 				then (
-					if(r.position.y > position.y) 
+					if(o.position.y > position.y) 
 					then ( rotate("CCW") )
-					else if(r.position.y > position.y) then
+					else if(o.position.y > position.y) then
 					( rotate("CW"))
 					else if(direction = 8) then(rotate("CCW"))else(rotate("CW"))
 					
@@ -337,7 +314,7 @@ operations
 					if((ATCRadar`size - position.x) = speed) 
 					then (
 						-- rodar para a posicao lateral
-						if(r.position.y > position.y) 
+						if(o.position.y > position.y) 
 						then ( 
 							rotate("CCW");
 							nextDirection := (nextDirection - 2) mod 8;
@@ -347,20 +324,27 @@ operations
 							nextDirection := (nextDirection + 2) mod 8;
 						 )
 					)
-					else if((position.y - r.position.y) = speed ) 
+					else if((position.y - o.position.y) = speed ) 
 					then(
 						rotate("CW");
 						nextDirection := (nextDirection + 2) mod 8;
 						
-					) else if((position.y - r.position.y) = -speed  ) 
+					) else if((position.y - o.position.y) = -speed  ) 
 						then (
 							rotate("CCW");
 							nextDirection := (nextDirection - 2) mod 8;		
 					);
 				)
 			)
+		);
+		
+		public lineUpWithRunway: () ==> ()
+		lineUpWithRunway() ==
+		(
+			dcl r: Runway := ATCRadar`runway;
 			
-			
+			lineUp(r.entryDir, r);
+		
 		)
 		post position = position~;
 		
