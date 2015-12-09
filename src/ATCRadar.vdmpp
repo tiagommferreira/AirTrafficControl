@@ -7,7 +7,7 @@ instance variables
 -- TODO Define instance variables here
 	public static radar: set of Object := {};
 	public static size: nat := 20;
-	public static runway: Runway := new Runway(new Position(9,11),1);
+	public static runway: Runway := new Runway(new Position(9,11),7);
 	
 operations
 -- TODO Define operations here

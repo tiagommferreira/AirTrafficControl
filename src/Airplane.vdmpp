@@ -13,6 +13,7 @@ instance variables
 	public objective: Objective := <Hold>;
 	private nextDirection: nat;
 	private beaconId: nat;
+	private entryBeacon: nat;
 	
 operations
 -- TODO Define operations here
@@ -23,9 +24,10 @@ operations
 			(
 					id := id1;
 					direction := direction1;
-					--setObjective(<Beacon>,3);
+					setObjective(<Beacon>,3);
 					speed := speed1;
 					position := position1;
+					entryBeacon:= 0;
 					nextDirection := ((ATCRadar`runway.entryDir+4) mod 8); -- gives the opposite location of the entrance
 					return self;
 			)
@@ -136,30 +138,33 @@ operations
 		public goToBeacon: () ==> ()
 		goToBeacon() ==
 		(
-			dcl b: Beacon := ATCRadar`getBeacon(beaconId);
-			dcl entry: nat;
-			
-			if(direction = 8 or direction = 7 or direction = 6)
-			then(entry := 3)
-			else if(direction = 2 or direction = 3 or direction = 4)
-			then(entry := 7)
-			else if(direction = 1)
-			then(entry := 5)
-			else if(direction = 5)
-			then(entry := 1);
-			
-			if(entry = 1)
-			then(nextDirection := 5)
-			else if(entry = 3)
-			then(nextDirection := 7)
-			else if(entry = 5)
-			then(nextDirection := 1)
-			else if(entry = 7)
-			then(nextDirection := 3);
-			
-			lineUp(entry, b);
-			
 		
+			dcl b: Beacon := ATCRadar`getBeacon(beaconId);
+			if(entryBeacon = 0) then(
+	
+				if(direction = 8 or direction = 7 or direction = 6)
+				then(entryBeacon := 3)
+				else if(direction = 2 or direction = 3 or direction = 4)
+				then(entryBeacon := 7)
+				else if(direction = 1)
+				then(entryBeacon := 5)
+				else if(direction = 5)
+				then(entryBeacon := 1);
+				
+				if(entryBeacon = 1)
+				then(nextDirection := 5)
+				else if(entryBeacon = 3)
+				then(nextDirection := 7)
+				else if(entryBeacon = 5)
+				then(nextDirection := 1)
+				else if(entryBeacon = 7)
+				then(nextDirection := 3);
+		
+				lineUp(entryBeacon, b);
+			) else (
+				lineUp(entryBeacon, b);
+			)
+			
 		);
 		
 		public lineUp: nat * Object ==> ()
