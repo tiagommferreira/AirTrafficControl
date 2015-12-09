@@ -24,7 +24,7 @@ operations
 			(
 					id := id1;
 					direction := direction1;
-					setObjective(<Beacon>,3);
+					setObjective(<Beacon>,4);
 					speed := speed1;
 					position := position1;
 					entryBeacon:= 0;
@@ -62,6 +62,13 @@ operations
 		(
 			objective := o;
 			beaconId := i;
+		)
+		post objective = o;
+	
+	public setObjective: Objective ==> ()
+		setObjective(o) ==
+		(
+			objective := o;
 		)
 		post objective = o;
 	
