@@ -10,7 +10,7 @@ instance variables
 	public static runway: Runway := new Runway(new Position(9,11),7);
 	
 operations
--- TODO Define operations here
+-- Creates basic ATCRadar
 	public ATCRadar: nat ==> ATCRadar
 		ATCRadar(s) == 
 		(
@@ -21,7 +21,6 @@ operations
 			getAirplane(1).setObjective(<Land>);
 			radar := radar union {new Airplane(2,3,1,new Position(15,5))};
 			getAirplane(2).setObjective(<Land>);
-			radar := radar union {new Airplane(3,5,1,new Position(4,15))};
 			radar := radar union {new Beacon(4,new Position(9,9))};
 			radar := radar union {runway};
 			
@@ -29,8 +28,10 @@ operations
 			
 			return self;
 		)
-		pre s >= size;
+		pre s >= size
+		post card radar <> 0;
 		
+	-- Adds an object to the radar area	
 	public addObject: Object ==> ()
 		addObject(object) ==
 		(
@@ -38,7 +39,8 @@ operations
 		)
 		pre object <> undefined
 		post card radar = card radar~ + 1; 
-		
+	
+	--Gets an airplane from the radar with the specified ID	
 	public getAirplane: nat ==> Airplane
 		getAirplane(id) == 
 		(
@@ -54,7 +56,28 @@ operations
 		)
 		pre card radar > 0
 		post radar = radar~;
+	
+	--Gets the number of aiplanes currently in the radar range	
+	public getNumAirplanes: () ==> nat
+		getNumAirplanes() ==
+		(
+			dcl numAirplanes: nat := 0;
+			
+			for all object in set radar do
+			(
+				if(isofclass(Airplane,object))
+				then(
+					numAirplanes := numAirplanes + 1;
+				)
+				
+			);
+			
+			return numAirplanes;
+		)
+		pre card radar > 0
+		post radar = radar~;
 		
+	--Gets a beacon from the radar with the specified ID
 	public static getBeacon: nat ==> Beacon
 		getBeacon(id) == 
 		(
@@ -71,8 +94,7 @@ operations
 		pre card radar > 0
 		post radar = radar~;
 		
-		
-		
+	--checks the airplanes' safety area for other airplanes and rotates them accordingly 
 	public checkAirplaneSafety: () ==> ()
 		checkAirplaneSafety() ==
 		(
@@ -125,6 +147,7 @@ operations
 		pre card radar > 0
 		post radar = radar~;
 		
+		--Moves all airplanes
 		public move: () ==> ()
 			move() == 
 			(
@@ -144,7 +167,7 @@ operations
 							then(
 								radar := radar \ {a}
 							);
-							if(a.objective = <Beacon> and a.position.x = runway.position.x and a.position.y = runway.position.y)
+							if(a.objective = <Beacon> and a.position.x = getBeacon(4).position.x and a.position.y = getBeacon(4).position.y)
 							then(
 								a.objective := <Hold>;
 							)
@@ -156,7 +179,8 @@ operations
 				);
 				print();
 			);
-			
+		
+		--Dysplay the radar in the console
 		public print: () ==> ()
 		print() ==
 		(
@@ -194,9 +218,4 @@ operations
 				y := y-1;
 			);
 		)
-
-functions
-
-traces
--- TODO Define Combinatorial Test Traces here
 end ATCRadar

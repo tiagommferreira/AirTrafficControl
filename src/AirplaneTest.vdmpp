@@ -44,46 +44,6 @@ class AirplaneTest
                     assertTrue(a.getDirection() = 7 and a.position.x = 5 and a.position.y = 5);
                 );
                 
-                private testLand: () ==> ()
-                testLand() ==
-                (
-                    a.setObjective(<Land>, 0);
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    assertTrue(a.getDirection() = 5);
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    assertTrue(a.getDirection() = 1);
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    a.move();
-                    assertTrue(a not in set ATCRadar`radar);
-                    
-                );
                 
                 public static main: () ==> ()
                 main() ==
@@ -91,7 +51,6 @@ class AirplaneTest
                     new AirplaneTest().testMove();
                     new AirplaneTest().testRotate();
                     new AirplaneTest().testMoveWithRotate();
-                    new AirplaneTest().testLand();
                         
                 );
 end AirplaneTest

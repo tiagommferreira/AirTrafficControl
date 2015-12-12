@@ -1,21 +1,62 @@
 class ATCRadarTest
         instance variables
-                r : ATCRadar := new ATCRadar(15);
+                r : ATCRadar := new ATCRadar(20);
         operations
                 private assertTrue: bool ==> ()
                 assertTrue(cond) == return
                 pre cond;
                         
-                private test: () ==> ()
-                test() ==
+                private testPlanesLand: () ==> ()
+                testPlanesLand() ==
                 (
-                    r.move();
+                		dcl i: nat := 0;
+                	
+										r.getAirplane(1).setObjective(<Land>);
+										r.getAirplane(2).setObjective(<Land>);
+										
+										
+										assertTrue(r.getNumAirplanes() = 2);
+                    
+										while i < 30 do 
+										(
+											r.move();
+											i := i+1;
+										);
+										
+										--all airplanes got to the runway and were destroyed
+										assertTrue(r.getNumAirplanes() = 0);
+										
+
+                );
+                
+                private testPlanesBeacon: () ==> ()
+                testPlanesBeacon() ==
+                (
+                		dcl i: nat := 0;
+                	
+										r.getAirplane(1).setObjective(<Beacon>,4);
+										r.getAirplane(2).setObjective(<Beacon>,4);
+										
+										
+										assertTrue(r.getNumAirplanes() = 2);
+                    
+										while i < 40 do 
+										(
+											r.move();
+											i := i+1;
+										);
+										
+										--all airplanes got to the runway and were destroyed
+										assertTrue(r.getNumAirplanes() = 0);
+										
+
                 );
                 
                 public static main: () ==> ()
                 main() ==
                 (
-                    new ATCRadarTest().test();
+                    new ATCRadarTest().testPlanesLand();
+                    new ATCRadarTest().testPlanesBeacon();
                         
                 );
 end ATCRadarTest
