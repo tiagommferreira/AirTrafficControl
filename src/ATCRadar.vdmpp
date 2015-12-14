@@ -55,21 +55,13 @@ operations
 		post card radar = card radar~ + 1; 
 	
 	--Gets an airplane from the radar with the specified ID	
-	public getAirplane: nat ==> Airplane
-		getAirplane(id) == 
-		(
-			for all object in set radar do
-			(
-				if(isofclass(Airplane,object) and object.id = id)
-				then(
-					return object;
-				)
-				
-			);
-			return undefined;
-		)
-		pre card radar > 0
-		post radar = radar~;
+	 public getAirplane: nat ==> Airplane
+        getAirplane(id) ==
+        (
+            return iota x in set radar & (isofclass(Airplane,x) and x.id = id);
+        )
+        pre card radar > 0
+        post radar = radar~;
 	
 	--Gets the number of aiplanes currently in the radar range	
 	public getNumAirplanes: () ==> nat
@@ -93,20 +85,12 @@ operations
 		
 	--Gets a beacon from the radar with the specified ID
 	public static getBeacon: nat ==> Beacon
-		getBeacon(id) == 
-		(
-			for all object in set radar do
-			(
-				if(isofclass(Beacon,object) and object.id = id)
-				then(
-					return object;
-				)
-				
-			);
-			return undefined;
-		)
-		pre card radar > 0
-		post radar = radar~;
+	    getBeacon(id) ==
+	    (
+	        return iota x in set radar & (isofclass(Beacon,x) and x.id = id);
+	    )
+	    pre card radar > 0
+	    post radar = radar~;
 		
 	--checks the airplanes' safety area for other airplanes and rotates them accordingly 
 	public checkAirplaneSafety: () ==> ()
