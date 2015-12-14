@@ -1,6 +1,7 @@
 class Airplane is subclass of Object
 types
 	public Objective = <Land> | <Exit> | <Beacon> | <Hold>
+	
 values
 instance variables
 	private direction: nat;  -- 1 = N ; 2 = NE ; 3 = E ; 4 = SE ; 5 = S ; 6 = SW ; 7 = W ; 8 = NW
@@ -215,135 +216,6 @@ operations
 						then (
 							rotate("CW");
 							nextDirection := (nextDirection + 2) mod 8;		
-					);
-				)
-			)
-			
-			else if(entry = 1)
-				then(
-				--direcao da saida
-				if(direction <> nextDirection)
-				-- rodar para parede oposta
-				then (
-					if(o.position.x > position.x) 
-					then ( rotate("CCW"))
-					else if(o.position.x < position.x) then
-					( rotate("CW"))
-					else if(direction = 2) then(rotate("CCW"))else(rotate("CW"))
-					
-				) 
-				-- ja esta na direcao certa
-				else 
-				(
-					-- se ja esta no limite para ter de virar
-					if(position.y = speed) 
-					then (
-						-- rodar para a posicao lateral
-						if(o.position.x < position.x) 
-						then (
-							rotate("CW");
-							nextDirection := (nextDirection + 2 ) mod 8;
-						 )
-						else ( 
-							rotate("CCW");
-							nextDirection := (nextDirection -2 ) mod 8;
-						 )
-					)
-					else if((o.position.x - position.x) = speed ) 
-					then(
-						rotate("CCW");
-						nextDirection := (nextDirection - 2) mod 8;
-						
-					) else if((o.position.x - position.x) = -speed  ) 
-						then (
-							rotate("CW");
-							nextDirection := (nextDirection + 2) mod 8;		
-					);
-				)
-			)
-			
-			else if(entry = 3)
-			then(
-				--direcao da saida
-				if(direction <> nextDirection)
-				-- rodar para parede oposta
-				then (
-					if(o.position.y > position.y) 
-					then ( rotate("CW") )
-					else if(o.position.y > position.y) then
-					( rotate("CCW"))
-					else if(direction = 2) then(rotate("CW"))else(rotate("CCW"))
-					
-				) 
-				-- ja esta na direcao certa
-				else 
-				(
-					-- se ja esta no limite para ter de virar
-					if(position.x = speed) 
-					then (
-						-- rodar para a posicao lateral
-						if(o.position.y > position.y) 
-						then ( 
-							rotate("CW");
-							nextDirection := (nextDirection + 2) mod 8;
-						 )
-						else ( 
-							rotate("CCW");
-							nextDirection := (nextDirection - 2) mod 8;
-						 )
-					)
-					else if((position.y - o.position.y) = speed ) 
-					then(
-						rotate("CCW");
-						nextDirection := (nextDirection - 2) mod 8;
-						
-					) else if((position.y - o.position.y) = -speed  ) 
-						then (
-							rotate("CW");
-							nextDirection := (nextDirection + 2) mod 8;		
-					);
-				)
-			)
-			
-			else if(entry = 7)
-			then(
-				--direcao da saida
-				if(direction <> nextDirection)
-				-- rodar para parede oposta
-				then (
-					if(o.position.y > position.y) 
-					then ( rotate("CCW") )
-					else if(o.position.y > position.y) then
-					( rotate("CW"))
-					else if(direction = 8) then(rotate("CCW"))else(rotate("CW"))
-					
-				) 
-				-- ja esta na direcao certa
-				else 
-				(
-					-- se ja esta no limite para ter de virar
-					if((ATCRadar`size - position.x) = speed) 
-					then (
-						-- rodar para a posicao lateral
-						if(o.position.y > position.y) 
-						then ( 
-							rotate("CCW");
-							nextDirection := (nextDirection - 2) mod 8;
-						 )
-						else ( 
-							rotate("CW");
-							nextDirection := (nextDirection + 2) mod 8;
-						 )
-					)
-					else if((position.y - o.position.y) = speed ) 
-					then(
-						rotate("CW");
-						nextDirection := (nextDirection + 2) mod 8;
-						
-					) else if((position.y - o.position.y) = -speed  ) 
-						then (
-							rotate("CCW");
-							nextDirection := (nextDirection - 2) mod 8;		
 					);
 				)
 			)

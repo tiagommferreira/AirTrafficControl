@@ -1,5 +1,7 @@
 class ATCRadar
 types
+	public String = seq of char;
+	
 values
 -- TODO Define values here
 
@@ -8,6 +10,7 @@ instance variables
 	public static radar: set of Object := {};
 	public static size: nat := 20;
 	public static runway: Runway := new Runway(new Position(9,11),7);
+	
 	
 operations
 -- Creates basic ATCRadar
@@ -30,6 +33,17 @@ operations
 		)
 		pre s >= size
 		post card radar <> 0;
+		
+	-- returns a map with the radar info	
+	public getRadarInfo: () ==> map String to nat 
+		getRadarInfo() ==
+		(
+			dcl m1: map String to nat := {
+			"number of airplanes" |-> getNumAirplanes()
+			 };
+			
+			return m1;
+		);
 		
 	-- Adds an object to the radar area	
 	public addObject: Object ==> ()
